@@ -1,2 +1,2 @@
 .venv
-alko_parser/__pycache__
+**/*/__pycache__

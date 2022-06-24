@@ -1,6 +1,5 @@
 import pandas as pd
-from utils import get_rounded_float, get_beers_from_alko_xlsx, get_alko_urls
-from constants import path_to_file
+from .utils import get_rounded_float
 
 
 def get_random_beer_recommendations(beers: pd.DataFrame, amount: int):
@@ -32,14 +31,14 @@ def get_random_beer_recommendations_with_budget(beers: pd.DataFrame, amount: int
             continue
 
     return {
-        "beers": beers[beers['Numero'].isin(ids)],
+        "beers": beers[beers['Numero'].isin(ids)].to_json(),
         "spare_change": get_rounded_float(budget - spent_money)
     }
 
 
-beer_df = get_beers_from_alko_xlsx(path_to_file)
-tastings = get_random_beer_recommendations_with_budget(beer_df, 6, 50)
-urls = get_alko_urls(tastings["beers"])
-print('try these beers')
-for url in urls:
-    print(url)
+# beer_df = get_beers_from_alko_xlsx(path_to_file)
+# tastings = get_random_beer_recommendations_with_budget(beer_df, 6, 50)
+# urls = get_alko_urls(tastings["beers"])
+# print('try these beers')
+# for url in urls:
+#     print(url)

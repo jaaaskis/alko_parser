@@ -1,6 +1,6 @@
 from math import ceil
 import pandas as pd
-from constants import alko_store_inventory_url_fi, alko_store_product_url_fi
+from .constants import alko_store_inventory_url_fi, alko_store_product_url_fi
 
 
 def get_inventory_url(sku: str):
