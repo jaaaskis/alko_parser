@@ -1,3 +1,4 @@
+from genericpath import exists
 from math import ceil
 import os
 import pandas as pd
@@ -58,6 +59,11 @@ def get_or_create_beers_dataframe():
     # If no excel fetch the latest from Alko
     try:
         df = pd.read_excel(alko_store_products_fi, engine="openpyxl")
+        # Check that ./data folder exists and if not create it
+        if not os.path.exists('./data'):
+            print('Making ./data directory...')
+            os.mkdir('./data')
+
         # Write whole inventory
         print('Writing whole inventory .xlsx ...')
         df.to_excel(path_to_whole_inventory)
