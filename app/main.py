@@ -1,4 +1,5 @@
 import time
+import datetime
 import uvicorn
 from typing import Union
 from fastapi import FastAPI
@@ -8,14 +9,20 @@ from app.modules.recommendations import get_random_beer_recommendations_with_bud
 from app.modules.utils import get_or_create_beers_dataframe, get_rounded_float
 
 app = FastAPI()
-favicon_path = "static/favicon.ico"
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 @app.get("/favicon.ico")
 def favicon():
-    return FileResponse(favicon_path)
+    now = datetime.datetime.now()
+    hour = now.hour
+    if(hour < 20 and hour > 8):
+        favicon_day = "static/favicon.ico"
+        return FileResponse(favicon_day)
+    else:
+        favicon_night = "static/favicon_empty.ico"
+        return FileResponse(favicon_night)
 
 
 @app.get("/")
