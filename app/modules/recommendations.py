@@ -13,9 +13,10 @@ def get_random_beer_recommendations_with_budget(beers: pd.DataFrame, amount: int
     mask = beers['Hinta'] <= max_price
     selected = beers[mask].sample(amount).reset_index()
     spent_money = selected["Hinta"].sum()
-    print(selected)
     return {
         # TODO: parse into proper dictionaries
-        "beers": selected['Nimi'].to_json(),
+        "beers": selected['Nimi'],
+        "prices": selected["Hinta"],
+        "total": get_rounded_float(spent_money),
         "spare_change": get_rounded_float(budget - spent_money)
     }
