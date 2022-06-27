@@ -17,7 +17,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 def favicon():
     now = datetime.datetime.now()
     hour = now.hour
-    if(hour < 20 and hour > 8):
+    if hour < 20 and hour > 8:
         favicon_day = "static/favicon.ico"
         return FileResponse(favicon_day)
     else:
@@ -36,15 +36,14 @@ def get_recommendations(amount: int, budget: Union[str, None] = None):
     beer_df = get_or_create_beers_dataframe()
     if beer_df is not None:
         budget = int(budget) if budget else 20
-        tastings = get_random_beer_recommendations_with_budget(
-            beer_df, amount, budget)
+        tastings = get_random_beer_recommendations_with_budget(beer_df, amount, budget)
         end_time = time.time()
         elapsed = get_rounded_float(end_time - start_time)
-        print('Got beers in %s ms' % elapsed)
+        print("Got beers in %s ms" % elapsed)
 
         return tastings
 
-    print('No Excel data to work with')
+    print("No Excel data to work with")
     return {"message": "All out of beer"}
 
 
