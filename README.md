@@ -6,7 +6,7 @@ No idea about proper project structure, yet.
 
 ## Installing dependencies
 
-Run `poetry install` in `/app`
+Run `poetry install`
 
 ## Running the project
 
