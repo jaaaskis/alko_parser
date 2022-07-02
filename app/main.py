@@ -5,6 +5,7 @@ from typing import Union
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+from app.modules.database.main import test_connection
 from app.modules.recommendations import get_random_beer_recommendations_with_budget
 from app.modules.utils import get_or_create_beers_dataframe, get_rounded_float
 
@@ -27,6 +28,7 @@ def favicon():
 
 @app.get("/")
 def read_root():
+    test_connection()
     return {"Hello": "World"}
 
 
