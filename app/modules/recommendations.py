@@ -15,7 +15,7 @@ def get_random_beer_recommendations_with_budget(
     mask = beers["Hinta"] <= max_price
     selected = beers[mask].sample(amount).reset_index()
     spent_money = selected["Hinta"].sum()
-    print(selected.columns)
+
     return {
         # TODO: parse into proper dictionaries
         "beers": selected["Nimi"],
