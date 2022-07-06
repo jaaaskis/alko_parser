@@ -14,4 +14,4 @@ Run `uvicorn app.main:app --reload` in root folder
 
 ## Deployment
 
-In the works
+Pushes to `main` get deployed in Heroku
