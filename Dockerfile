@@ -32,7 +32,6 @@ RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 # Copy the app and used directories to the /code directory.
 COPY ./app /code/app
-COPY ./data /code/data
 COPY ./static /code/static
 
 # Run the uvicorn command, telling it to use the app object imported from app.main.
