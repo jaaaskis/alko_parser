@@ -5,7 +5,12 @@ from typing import Union
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
-from app.modules.database.main import test_connection
+from app.modules.database.main import (
+    get_manufacturer_by_id,
+    get_product_by_id,
+    test_connection,
+    get_all_products,
+)
 from app.modules.recommendations import get_random_beer_recommendations_with_budget
 from app.modules.utils import get_or_create_beers_dataframe, get_rounded_float
 
@@ -28,11 +33,29 @@ def favicon():
 
 @app.get("/")
 def read_root():
-    test_connection()
-    return {"Hello": "World"}
+    result = test_connection()
+    return result
 
 
-@app.get("/beers/{amount}")
+@app.get("/manufacturer/{id}")
+def get_manufacturer(id: int):
+    result = get_manufacturer_by_id(id)
+    return result
+
+
+@app.get("/product/{id}")
+def get_product(id: int):
+    result = get_product_by_id(id)
+    return result
+
+
+@app.get("/products")
+def get_products():
+    result = get_all_products()
+    return result
+
+
+@app.get("/random/{amount}")
 def get_recommendations(amount: int, budget: Union[str, None] = None):
     start_time = time.time()
     beer_df = get_or_create_beers_dataframe()
