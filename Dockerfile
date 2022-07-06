@@ -35,4 +35,4 @@ COPY ./app /code/app
 COPY ./static /code/static
 
 # Run the uvicorn command, telling it to use the app object imported from app.main.
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "3000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", $PORT]
