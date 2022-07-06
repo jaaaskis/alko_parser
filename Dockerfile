@@ -36,4 +36,4 @@ COPY ./static /code/static
 
 # Run the uvicorn command, telling it to use the app object imported from app.main.
 # CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", PORT]
-# Run command in Procfile
+# Run command in heroku.yml
