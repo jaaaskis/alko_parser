@@ -6,13 +6,13 @@ from app.modules.database.queries import (
     get_manufacturer_by_id_query,
     get_product_by_id_query,
 )
-from .constants import database_name, database_user
+from .constants import DATABASE_CONNECTION
 
 
 def test_connection():
     try:
         # Connect to an existing database
-        connection = psycopg2.connect(f"dbname={database_name} user={database_user}")
+        connection = psycopg2.connect(DATABASE_CONNECTION, sslmode="require")
         # Open a cursor to perform database operations
         cursor = connection.cursor()
         # Defining the query
@@ -34,7 +34,7 @@ def test_connection():
 def get_manufacturer_by_id(id: int):
     try:
         # Connect to an existing database
-        connection = psycopg2.connect(f"dbname={database_name} user={database_user}")
+        connection = psycopg2.connect(DATABASE_CONNECTION, sslmode="require")
         # Create a cursor to perform database operations
         cursor = connection.cursor()
         # Defining the query
@@ -57,7 +57,7 @@ def get_manufacturer_by_id(id: int):
 def get_product_by_id(id: int):
     try:
         # Connect to an existing database
-        connection = psycopg2.connect(f"dbname={database_name} user={database_user}")
+        connection = psycopg2.connect(DATABASE_CONNECTION, sslmode="require")
         # Create a cursor to perform database operations
         cursor = connection.cursor()
         # Defining the query
@@ -80,7 +80,7 @@ def get_product_by_id(id: int):
 def get_all_products():
     try:
         # Connect to an existing database
-        connection = psycopg2.connect(f"dbname={database_name} user={database_user}")
+        connection = psycopg2.connect(DATABASE_CONNECTION, sslmode="require")
         # Create a cursor to perform database operations
         cursor = connection.cursor()
         # Defining the query
