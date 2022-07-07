@@ -1,10 +1,14 @@
+from difflib import get_close_matches
 from math import ceil
 import os
 import pandas as pd
 
+from app.modules.database.queries import add_manufacturer_query
+
 from .constants import (
     ALKO_STORE_INVENTORY_URL_FI,
     ALKO_STORE_PRODUCT_URL_FI,
+    COUNTRY_MAP,
     PATH_TO_BEERS,
     PATH_TO_WHOLE_INVENTORY,
     ALKO_STORE_PRODUCTS_FI,
@@ -82,3 +86,25 @@ def get_or_create_beers_dataframe():
         return beers
     except:
         print("Something went wrong!")
+
+
+def get_manufacturers():
+    inventory_excel = os.path.isfile(PATH_TO_WHOLE_INVENTORY)
+    if inventory_excel:
+        df = pd.read_excel(PATH_TO_WHOLE_INVENTORY, engine="openpyxl")
+        df = trim_alko_inventory_head(df)
+
+        names = df[["Valmistaja", "Valmistusmaa"]].sort_values("Valmistaja")
+
+        names["Valmistaja"] = names["Valmistaja"].str.lower()
+        names["Valmistaja"] = names["Valmistaja"].apply(
+            lambda x: get_close_matches(x, names["Valmistaja"])[0]
+        )
+        names = names.drop_duplicates()
+        names = names.reset_index(drop=True)
+        names["Valmistaja"] = names["Valmistaja"].str.title()
+        for idx, row in names.iterrows():
+            manufacturer = row["Valmistaja"]
+            country = row["Valmistusmaa"]
+            query = add_manufacturer_query(manufacturer, COUNTRY_MAP[country])
+            print(idx, query)

@@ -6,8 +6,11 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from app.modules.database.main import (
+    get_all_manufacturers,
+    get_all_stores,
     get_manufacturer_by_id,
     get_product_by_id,
+    get_store_by_id,
     insert_store,
     test_connection,
     get_all_products,
@@ -42,10 +45,34 @@ def read_root():
     return result
 
 
+@app.get("/manufacturers")
+def get_manufacturers():
+    start_time = time.time()
+    results = get_all_manufacturers()
+    end_time = time.time() - start_time
+    return {
+        "count": len(results),
+        "elapsed": get_rounded_float(end_time),
+        "result": results,
+    }
+
+
 @app.get("/manufacturer/{id}")
 def get_manufacturer(id: int):
     result = get_manufacturer_by_id(id)
     return result
+
+
+@app.get("/products")
+def get_products():
+    start_time = time.time()
+    results = get_all_products()
+    end_time = time.time() - start_time
+    return {
+        "count": len(results),
+        "elapsed": get_rounded_float(end_time),
+        "result": results,
+    }
 
 
 @app.get("/product/{id}")
@@ -54,9 +81,21 @@ def get_product(id: int):
     return result
 
 
-@app.get("/products")
+@app.get("/stores")
 def get_products():
-    result = get_all_products()
+    start_time = time.time()
+    results = get_all_stores()
+    end_time = time.time() - start_time
+    return {
+        "count": len(results),
+        "elapsed": get_rounded_float(end_time),
+        "results": results,
+    }
+
+
+@app.get("/store/{id}")
+def get_products(id: int):
+    result = get_store_by_id(id)
     return result
 
 
