@@ -1,22 +1,22 @@
-from genericpath import exists
 from math import ceil
 import os
 import pandas as pd
+
 from .constants import (
-    alko_store_inventory_url_fi,
-    alko_store_product_url_fi,
-    path_to_beers,
-    path_to_whole_inventory,
-    alko_store_products_fi,
+    ALKO_STORE_INVENTORY_URL_FI,
+    ALKO_STORE_PRODUCT_URL_FI,
+    PATH_TO_BEERS,
+    PATH_TO_WHOLE_INVENTORY,
+    ALKO_STORE_PRODUCTS_FI,
 )
 
 
 def get_inventory_url(sku: str):
-    return alko_store_inventory_url_fi + str(sku)
+    return ALKO_STORE_INVENTORY_URL_FI + str(sku)
 
 
 def get_product_url(sku: str):
-    return alko_store_product_url_fi + str(sku)
+    return ALKO_STORE_PRODUCT_URL_FI + str(sku)
 
 
 def get_rounded_float(n: float):
@@ -47,24 +47,24 @@ def trim_alko_inventory_head(df: pd.DataFrame):
 
 def get_or_create_beers_dataframe():
     # Check if filtered excel exists
-    beer_df = os.path.isfile(path_to_beers)
+    beer_df = os.path.isfile(PATH_TO_BEERS)
     if beer_df:
-        df = pd.read_excel(path_to_beers, engine="openpyxl")
+        df = pd.read_excel(PATH_TO_BEERS, engine="openpyxl")
         return df
 
     # If no filtered excel check if inventory excel exists
-    inventory_df = os.path.isfile(path_to_whole_inventory)
+    inventory_df = os.path.isfile(PATH_TO_WHOLE_INVENTORY)
     if inventory_df:
-        df = pd.read_excel(path_to_whole_inventory, engine="openpyxl")
+        df = pd.read_excel(PATH_TO_WHOLE_INVENTORY, engine="openpyxl")
         df = trim_alko_inventory_head(df)
         # Write excel to file
         print("Writing beers.xlsx ...")
-        df.to_excel(path_to_beers)
+        df.to_excel(PATH_TO_BEERS)
         return df
 
     # If no excel fetch the latest from Alko
     try:
-        df = pd.read_excel(alko_store_products_fi, engine="openpyxl")
+        df = pd.read_excel(ALKO_STORE_PRODUCTS_FI, engine="openpyxl")
         # Check that ./data folder exists and if not create it
         if not os.path.exists("./data"):
             print("Making ./data directory...")
@@ -72,12 +72,12 @@ def get_or_create_beers_dataframe():
 
         # Write whole inventory
         print("Writing whole inventory .xlsx ...")
-        df.to_excel(path_to_whole_inventory)
+        df.to_excel(PATH_TO_WHOLE_INVENTORY)
 
         beers = trim_alko_inventory_head(df)
         # Write beers.xlsx
         print("Writing beers.xlsx ...")
-        beers.to_excel(path_to_beers)
+        beers.to_excel(PATH_TO_BEERS)
 
         return beers
     except:
