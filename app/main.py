@@ -20,6 +20,7 @@ from app.modules.scraper import scrape_alko_stores
 from app.modules.utils import (
     get_or_create_beers_dataframe,
     get_rounded_float,
+    parse_product,
 )
 
 app = FastAPI()
@@ -78,6 +79,7 @@ def get_products():
 @app.get("/product/{id}")
 def get_product(id: int):
     result = get_product_by_id(id)
+    result = parse_product(result)
     return result
 
 

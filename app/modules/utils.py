@@ -85,3 +85,13 @@ def get_or_create_beers_dataframe():
         return beers
     except:
         print("Something went wrong!")
+
+
+def parse_product(data: tuple):
+    return {
+        "name": data[0],
+        "type": data[1],
+        "subtype": data[2],
+        "brewery": data[3],
+        "abv": data[4],
+    }
