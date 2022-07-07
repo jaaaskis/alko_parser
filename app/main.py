@@ -8,11 +8,16 @@ from fastapi.responses import FileResponse
 from app.modules.database.main import (
     get_manufacturer_by_id,
     get_product_by_id,
+    insert_store,
     test_connection,
     get_all_products,
 )
 from app.modules.recommendations import get_random_beer_recommendations_with_budget
-from app.modules.utils import get_or_create_beers_dataframe, get_rounded_float
+from app.modules.scraper import scrape_alko_stores
+from app.modules.utils import (
+    get_or_create_beers_dataframe,
+    get_rounded_float,
+)
 
 app = FastAPI()
 
@@ -53,6 +58,18 @@ def get_product(id: int):
 def get_products():
     result = get_all_products()
     return result
+
+
+@app.get("/scraper/stores")
+def scrape_stores(insert: bool = False):
+    """Temporary endpoint to insert Alko stores into DB"""
+    start_time = time.time()
+    res = scrape_alko_stores()
+    if insert:
+        for addr in res:
+            insert_store(addr[0], addr[1])
+    end_time = time.time() - start_time
+    return {"message": "OK", "elapsed": get_rounded_float(end_time), "stores": res}
 
 
 @app.get("/random/{amount}")
