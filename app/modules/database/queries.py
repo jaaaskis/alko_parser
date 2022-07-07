@@ -3,7 +3,10 @@ def get_manufacturer_by_id_query(id: int):
 
 
 def get_product_by_id_query(id: int):
-    return 'SELECT name, abv FROM "Products" WHERE id = {id}'.format(id=id)
+    fields = "p.name as name, pt.type as type, pt.sub_type as sub_type, m.name as Manufacturer, m.country as Country, p.abv as ABV"
+    tables = '"Products" p LEFT JOIN "Manufacturers" AS m ON p.manufacturer_id = m.id LEFT JOIN "ProductTypes" AS pt ON p.type_id = pt.id'
+    query = f"SELECT {fields} " f"FROM {tables} " f"WHERE p.id = {id}"
+    return query
 
 
 def get_store_by_id_query(id: int):
