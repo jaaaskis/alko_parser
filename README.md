@@ -1,12 +1,42 @@
-# Beer recommendations
+# Alko project backend
 
-Recommend random beers based on Alko product data
+A backend for displaying and fetching alcoholic beverages.
 
-No idea about proper project structure, yet.
+Just for fun and learning.
 
-## Installing dependencies
+## Setting up project
 
-Run `poetry install`
+### Install PostgreSQL
+
+On MacOS with Homebrew
+
+`brew install postgresql`
+
+On Linux / Windows
+
+Follow instructions [here](https://www.postgresql.org/download/)
+
+### Install Poetry
+
+https://python-poetry.org/
+
+Run `poetry install` in project root
+
+## Heroku related things
+
+Ask to be added as a collaborator to the project.
+
+### Install Heroku CLI
+
+https://devcenter.heroku.com/articles/heroku-cli#install-the-heroku-cli
+
+Run `heroku login`
+
+Get the DB dump by running `heroku pg:pull postgresql-vertical-68691 <dbname> --app alko-project-backend`
+
+`<dbname>` can be anything you specify e.g. `beerdb`. This will be your local db name.
+
+Set the `DATABASE_NAME` and `DATABASE_USER` in `.env` for local development.
 
 ## Running the project
 
