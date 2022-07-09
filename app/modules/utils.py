@@ -1,9 +1,6 @@
-from difflib import get_close_matches
 from math import ceil
 import os
 import pandas as pd
-
-from app.modules.database.queries import add_manufacturer_query
 
 from .constants import (
     ALKO_STORE_INVENTORY_URL_FI,

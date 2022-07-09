@@ -8,15 +8,11 @@ from fastapi.responses import FileResponse
 from app.modules.database.main import (
     get_all_manufacturers,
     get_all_stores,
-    get_manufacturer_by_id,
-    get_product_by_id,
-    get_store_by_id,
-    insert_store,
+    get_record_by_id_and_type,
     test_connection,
     get_all_products,
 )
 from app.modules.recommendations import get_random_beer_recommendations_with_budget
-from app.modules.scraper import scrape_alko_stores
 from app.modules.utils import (
     get_or_create_beers_dataframe,
     get_rounded_float,
@@ -60,8 +56,12 @@ def get_manufacturers():
 
 @app.get("/manufacturer/{id}")
 def get_manufacturer(id: int):
-    result = get_manufacturer_by_id(id)
-    return result
+    try:
+        result = get_record_by_id_and_type(id, "manufacturer")
+        return result
+    except Exception as error:
+        print("Something went wrong!", error)
+        return {"message": "Something went wrong"}
 
 
 @app.get("/products")
@@ -78,9 +78,13 @@ def get_products():
 
 @app.get("/product/{id}")
 def get_product(id: int):
-    result = get_product_by_id(id)
-    result = parse_product(result)
-    return result
+    try:
+        result = get_record_by_id_and_type(id, "product")
+        result = parse_product(result)
+        return result
+    except Exception as error:
+        print("Something went wrong!", error)
+        return {"message": "Something went wrong"}
 
 
 @app.get("/stores")
@@ -97,20 +101,12 @@ def get_products():
 
 @app.get("/store/{id}")
 def get_products(id: int):
-    result = get_store_by_id(id)
-    return result
-
-
-@app.get("/scraper/stores")
-def scrape_stores(insert: bool = False):
-    """Temporary endpoint to insert Alko stores into DB"""
-    start_time = time.time()
-    res = scrape_alko_stores()
-    if insert:
-        for addr in res:
-            insert_store(addr[0], addr[1])
-    end_time = time.time() - start_time
-    return {"message": "OK", "elapsed": get_rounded_float(end_time), "stores": res}
+    try:
+        result = get_record_by_id_and_type(id, "store")
+        return result
+    except Exception as error:
+        print("Something went wrong!", error)
+        return {"message": "Something went wrong"}
 
 
 @app.get("/random/{amount}")

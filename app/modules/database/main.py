@@ -1,15 +1,13 @@
 import psycopg2
 
 from app.modules.database.queries import (
-    add_store_query,
     get_all_manufacturers_query,
     get_all_products_query,
     get_all_stores_query,
     get_all_test_query,
-    get_manufacturer_by_id_query,
-    get_product_by_id_query,
-    get_store_by_id_query,
 )
+from app.modules.database.utils import get_query_by_type
+
 from .constants import DATABASE_CONNECTION
 
 
@@ -34,56 +32,14 @@ def test_connection():
             connection.close()
 
 
-def get_manufacturer_by_id(id: int):
+def get_record_by_id_and_type(id: int, type: str):
     try:
         # Connect to an existing database
         connection = psycopg2.connect(DATABASE_CONNECTION, sslmode="require")
         # Create a cursor to perform database operations
         cursor = connection.cursor()
         # Defining the query
-        query = get_manufacturer_by_id_query(id)
-        # Executing a SQL query
-        cursor.execute(query)
-        # Fetch result
-        record = cursor.fetchone()
-        return record
-    except (Exception, psycopg2.Error) as error:
-        print("Error while connecting to PostgreSQL", error)
-    finally:
-        if connection:
-            cursor.close()
-            connection.close()
-
-
-def get_product_by_id(id: int):
-    try:
-        # Connect to an existing database
-        connection = psycopg2.connect(DATABASE_CONNECTION, sslmode="require")
-        # Create a cursor to perform database operations
-        cursor = connection.cursor()
-        # Defining the query
-        query = get_product_by_id_query(id)
-        # Executing a SQL query
-        cursor.execute(query)
-        # Fetch result
-        record = cursor.fetchone()
-        return record
-    except (Exception, psycopg2.Error) as error:
-        print("Error while connecting to PostgreSQL", error)
-    finally:
-        if connection:
-            cursor.close()
-            connection.close()
-
-
-def get_store_by_id(id: int):
-    try:
-        # Connect to an existing database
-        connection = psycopg2.connect(DATABASE_CONNECTION, sslmode="require")
-        # Create a cursor to perform database operations
-        cursor = connection.cursor()
-        # Defining the query
-        query = get_store_by_id_query(id)
+        query = get_query_by_type(id, type)
         # Executing a SQL query
         cursor.execute(query)
         # Fetch result
@@ -152,26 +108,6 @@ def get_all_stores():
         # Fetch result
         record = cursor.fetchall()
         return record
-    except (Exception, psycopg2.Error) as error:
-        print("Error while connecting to PostgreSQL", error)
-    finally:
-        if connection:
-            cursor.close()
-            connection.close()
-
-
-def insert_store(name: str, address: str):
-    try:
-        # Connect to an existing database
-        connection = psycopg2.connect(DATABASE_CONNECTION, sslmode="require")
-        # Create a cursor to perform database operations
-        cursor = connection.cursor()
-        # Defining the query
-        query = add_store_query(name, address)
-        # Executing a SQL query
-        cursor.execute(query)
-        # Commit changes
-        connection.commit()
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)
     finally:
